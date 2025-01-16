@@ -1,4 +1,4 @@
-package cmd
+package drawer
 
 import (
 	"errors"
@@ -8,6 +8,13 @@ import (
 	"github.com/elliotchance/orderedmap/v2"
 	log "github.com/sirupsen/logrus"
 )
+
+var Coords bool
+var GraphDirection = "LR"
+var UseAscii = false
+var BoxBorderPadding = 1
+var PaddingBetweenX = 5
+var PaddingBetweenY = 5
 
 type graphProperties struct {
 	data           *orderedmap.OrderedMap[string, []textEdge]
@@ -164,7 +171,7 @@ func (gp *graphProperties) parseString(line string) ([]textNode, error) {
 	return []textNode{}, errors.New("Could not parse line: " + line)
 }
 
-func mermaidFileToMap(mermaid, styleType string) (*graphProperties, error) {
+func MermaidFileToMap(mermaid, styleType string) (*graphProperties, error) {
 	// Allow split on both \n and the actual string "\n" for curl compatibility
 	newlinePattern := regexp.MustCompile(`\n|\\n`)
 	lines := newlinePattern.Split(string(mermaid), -1)
@@ -175,9 +182,9 @@ func mermaidFileToMap(mermaid, styleType string) (*graphProperties, error) {
 	// First line should either say "graph TD" or "graph LR"
 	switch lines[0] {
 	case "graph LR", "flowchart LR":
-		graphDirection = "LR"
+		GraphDirection = "LR"
 	case "graph TD", "flowchart TD":
-		graphDirection = "TD"
+		GraphDirection = "TD"
 	default:
 		return &properties, errors.New("first line should define the graph")
 	}

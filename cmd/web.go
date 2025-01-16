@@ -8,6 +8,7 @@ import (
 	"sync"
 
 	log "github.com/sirupsen/logrus"
+	"github.com/ymtdzzz/mermaid-ascii/pkg/drawer"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
@@ -85,7 +86,7 @@ func setupRouter() *gin.Engine {
 		xPadding := c.PostForm("xPadding")
 		if xPadding != "" {
 			if padding, err := strconv.Atoi(xPadding); err == nil {
-				paddingBetweenX = padding
+				drawer.PaddingBetweenX = padding
 			} else {
 				log.Warnf("Invalid xPadding value: %s", xPadding)
 			}
@@ -94,13 +95,13 @@ func setupRouter() *gin.Engine {
 		yPadding := c.PostForm("yPadding")
 		if yPadding != "" {
 			if padding, err := strconv.Atoi(yPadding); err == nil {
-				paddingBetweenY = padding
+				drawer.PaddingBetweenY = padding
 			} else {
 				log.Warnf("Invalid yPadding value: %s", yPadding)
 			}
 		}
 		useExtendedCharsData := c.PostForm("useExtendedChars")
-		useAscii = useExtendedCharsData == ""
+		drawer.UseAscii = useExtendedCharsData == ""
 		log.Debugf("Received input %s", c.Request.PostForm.Encode())
 
 		// Create a cache key using the input parameters
@@ -142,10 +143,10 @@ func setupRouter() *gin.Engine {
 }
 
 func generate_map(input string) string {
-	properties, err := mermaidFileToMap(input, "html")
+	properties, err := drawer.MermaidFileToMap(input, "html")
 	if err != nil {
 		return "Failed to parse mermaid file"
 	}
 
-	return drawMap(properties)
+	return drawer.DrawMap(properties)
 }

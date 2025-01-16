@@ -1,6 +1,6 @@
-module github.com/AlexanderGrooff/mermaid-ascii
+module github.com/ymtdzzz/mermaid-ascii // forked from: github.com/AlexanderGrooff/mermaid-ascii
 
-go 1.19
+go 1.23
 
 require (
 	github.com/elliotchance/orderedmap/v2 v2.2.0

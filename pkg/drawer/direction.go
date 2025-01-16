@@ -1,4 +1,4 @@
-package cmd
+package drawer
 
 type direction genericCoord
 
@@ -46,7 +46,7 @@ func (c drawingCoord) Direction(dir direction) drawingCoord {
 }
 
 func selfReferenceDirection(e *edge) (direction, direction, direction, direction) {
-	if graphDirection == "LR" {
+	if GraphDirection == "LR" {
 		return Right, Down, Down, Right
 	}
 	return Down, Right, Right, Down
@@ -63,7 +63,7 @@ func determineStartAndEndDir(e *edge) (direction, direction, direction, directio
 	// TODO: This causes some squirmy lines if the corner spot is already occupied.
 	switch d {
 	case LowerRight:
-		if graphDirection == "LR" {
+		if GraphDirection == "LR" {
 			preferredDir = Down
 			preferredOppositeDir = Left
 			alternativeDir = Right
@@ -75,7 +75,7 @@ func determineStartAndEndDir(e *edge) (direction, direction, direction, directio
 			alternativeOppositeDir = Left
 		}
 	case UpperRight:
-		if graphDirection == "LR" {
+		if GraphDirection == "LR" {
 			preferredDir = Up
 			preferredOppositeDir = Left
 			alternativeDir = Right
@@ -87,7 +87,7 @@ func determineStartAndEndDir(e *edge) (direction, direction, direction, directio
 			alternativeOppositeDir = Left
 		}
 	case LowerLeft:
-		if graphDirection == "LR" {
+		if GraphDirection == "LR" {
 			preferredDir = Down
 			preferredOppositeDir = Right
 			alternativeDir = Left
@@ -99,7 +99,7 @@ func determineStartAndEndDir(e *edge) (direction, direction, direction, directio
 			alternativeOppositeDir = Right
 		}
 	case UpperLeft:
-		if graphDirection == "LR" {
+		if GraphDirection == "LR" {
 			preferredDir = Up
 			preferredOppositeDir = Right
 			alternativeDir = Left

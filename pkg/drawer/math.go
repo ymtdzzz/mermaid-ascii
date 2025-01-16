@@ -1,4 +1,4 @@
-package cmd
+package drawer
 
 func Min(x, y int) int {
 	if x < y {

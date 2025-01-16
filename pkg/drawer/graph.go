@@ -1,4 +1,4 @@
-package cmd
+package drawer
 
 import (
 	"errors"
@@ -109,7 +109,7 @@ func (g *graph) createMapping() {
 	}
 	for _, n := range rootNodes {
 		var mappingCoord *gridCoord
-		if graphDirection == "LR" {
+		if GraphDirection == "LR" {
 			mappingCoord = g.reserveSpotInGrid(g.nodes[n.index], &gridCoord{x: 0, y: highestPositionPerLevel[0]})
 		} else {
 			mappingCoord = g.reserveSpotInGrid(g.nodes[n.index], &gridCoord{x: highestPositionPerLevel[0], y: 0})
@@ -123,7 +123,7 @@ func (g *graph) createMapping() {
 		log.Debugf("Creating mapping for node %s at %v", n.name, n.gridCoord)
 		var childLevel int
 		// Next column is 4 coords further. This is because every node is 3 coords wide + 1 coord inbetween.
-		if graphDirection == "LR" {
+		if GraphDirection == "LR" {
 			childLevel = n.gridCoord.x + 4
 		} else {
 			childLevel = n.gridCoord.y + 4
@@ -136,7 +136,7 @@ func (g *graph) createMapping() {
 			}
 
 			var mappingCoord *gridCoord
-			if graphDirection == "LR" {
+			if GraphDirection == "LR" {
 				mappingCoord = g.reserveSpotInGrid(g.nodes[child.index], &gridCoord{x: childLevel, y: highestPosition})
 			} else {
 				mappingCoord = g.reserveSpotInGrid(g.nodes[child.index], &gridCoord{x: highestPosition, y: childLevel})

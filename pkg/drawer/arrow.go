@@ -1,4 +1,4 @@
-package cmd
+package drawer
 
 import (
 	"container/heap"
@@ -174,7 +174,7 @@ func (g *graph) drawBoxStart(path []gridCoord, firstLine []drawingCoord) *drawin
 	dir := determineDirection(genericCoord(path[0]), genericCoord(path[1]))
 	log.Debugf("Drawing box start at %v with direction %v for line %v", from, dir, path)
 
-	if useAscii {
+	if UseAscii {
 		return &d
 	}
 
@@ -198,7 +198,7 @@ func (g *graph) drawArrowHead(line []drawingCoord) *drawing {
 	dir := determineDirection(genericCoord(from), genericCoord(lastPos))
 
 	var char string
-	if !useAscii {
+	if !UseAscii {
 		switch dir {
 		case Up:
 			char = "▲"
@@ -251,7 +251,7 @@ func (g *graph) drawCorners(path []gridCoord) *drawing {
 		nextDir := determineDirection(genericCoord(coord), genericCoord(path[idx+1]))
 
 		var corner string
-		if !useAscii {
+		if !UseAscii {
 			switch {
 			case (prevDir == Right && nextDir == Down) || (prevDir == Up && nextDir == Left):
 				corner = "┐"

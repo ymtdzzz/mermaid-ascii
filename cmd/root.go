@@ -6,16 +6,12 @@ import (
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+
+	"github.com/ymtdzzz/mermaid-ascii/pkg/drawer"
 )
 
 // Global flags
 var Verbose bool
-var Coords bool
-var boxBorderPadding = 1
-var paddingBetweenX = 5
-var paddingBetweenY = 5
-var graphDirection = "LR"
-var useAscii = false
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -48,11 +44,11 @@ var rootCmd = &cobra.Command{
 			}
 		}
 
-		properties, err := mermaidFileToMap(string(mermaid), "cli")
+		properties, err := drawer.MermaidFileToMap(string(mermaid), "cli")
 		if err != nil {
 			log.Fatal("Failed to parse mermaid input: ", err)
 		}
-		drawMap(properties)
+		drawer.DrawMap(properties)
 	},
 }
 
@@ -71,11 +67,11 @@ func init() {
 	// will be global for your application.
 
 	rootCmd.PersistentFlags().BoolVarP(&Verbose, "verbose", "v", false, "Verbose output")
-	rootCmd.PersistentFlags().BoolVarP(&useAscii, "ascii", "a", false, "Don't use extended character set")
-	rootCmd.PersistentFlags().BoolVarP(&Coords, "coords", "c", false, "Show coordinates")
-	rootCmd.PersistentFlags().IntVarP(&paddingBetweenX, "paddingX", "x", paddingBetweenX, "Horizontal space between nodes")
-	rootCmd.PersistentFlags().IntVarP(&paddingBetweenY, "paddingY", "y", paddingBetweenY, "Vertical space between nodes")
-	rootCmd.PersistentFlags().IntVarP(&boxBorderPadding, "borderPadding", "p", boxBorderPadding, "Padding between text and border")
+	rootCmd.PersistentFlags().BoolVarP(&drawer.UseAscii, "ascii", "a", false, "Don't use extended character set")
+	rootCmd.PersistentFlags().BoolVarP(&drawer.Coords, "coords", "c", false, "Show coordinates")
+	rootCmd.PersistentFlags().IntVarP(&drawer.PaddingBetweenX, "paddingX", "x", drawer.PaddingBetweenX, "Horizontal space between nodes")
+	rootCmd.PersistentFlags().IntVarP(&drawer.PaddingBetweenY, "paddingY", "y", drawer.PaddingBetweenY, "Vertical space between nodes")
+	rootCmd.PersistentFlags().IntVarP(&drawer.BoxBorderPadding, "borderPadding", "p", drawer.BoxBorderPadding, "Padding between text and border")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.

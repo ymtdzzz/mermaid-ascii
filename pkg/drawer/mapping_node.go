@@ -1,4 +1,4 @@
-package cmd
+package drawer
 
 import (
 	log "github.com/sirupsen/logrus"
@@ -36,10 +36,10 @@ func (g *graph) setColumnWidth(n *node) {
 	// - 2x padding
 	// - 2x margin
 	col1 := 1
-	col2 := 2*boxBorderPadding + len(n.name)
+	col2 := 2*BoxBorderPadding + len(n.name)
 	col3 := 1
 	colsToBePlaced := []int{col1, col2, col3}
-	rowsToBePlaced := []int{1, 1 + 2*boxBorderPadding, 1} // Border, padding + line, border
+	rowsToBePlaced := []int{1, 1 + 2*BoxBorderPadding, 1} // Border, padding + line, border
 
 	for idx, col := range colsToBePlaced {
 		// Set new width for column if the size increased
@@ -55,20 +55,20 @@ func (g *graph) setColumnWidth(n *node) {
 
 	// Set padding before node
 	if n.gridCoord.x > 0 {
-		g.columnWidth[n.gridCoord.x-1] = paddingBetweenX // TODO: x2?
+		g.columnWidth[n.gridCoord.x-1] = PaddingBetweenX // TODO: x2?
 	}
 	if n.gridCoord.y > 0 {
-		g.rowHeight[n.gridCoord.y-1] = paddingBetweenY // TODO: x2?
+		g.rowHeight[n.gridCoord.y-1] = PaddingBetweenY // TODO: x2?
 	}
 }
 
 func (g *graph) increaseGridSizeForPath(path []gridCoord) {
 	for _, c := range path {
 		if _, exists := g.columnWidth[c.x]; !exists {
-			g.columnWidth[c.x] = paddingBetweenX / 2
+			g.columnWidth[c.x] = PaddingBetweenX / 2
 		}
 		if _, exists := g.rowHeight[c.y]; !exists {
-			g.rowHeight[c.y] = paddingBetweenY / 2
+			g.rowHeight[c.y] = PaddingBetweenY / 2
 		}
 	}
 }
@@ -77,7 +77,7 @@ func (g *graph) reserveSpotInGrid(n *node, requestedCoord *gridCoord) *gridCoord
 	if g.grid[*requestedCoord] != nil {
 		log.Debugf("Coord %d,%d is already taken", requestedCoord.x, requestedCoord.y)
 		// Next column is 4 coords further. This is because every node is 3 coords wide + 1 coord inbetween.
-		if graphDirection == "LR" {
+		if GraphDirection == "LR" {
 			return g.reserveSpotInGrid(n, &gridCoord{x: requestedCoord.x, y: requestedCoord.y + 4})
 		} else {
 			return g.reserveSpotInGrid(n, &gridCoord{x: requestedCoord.x + 4, y: requestedCoord.y})

@@ -1,4 +1,4 @@
-package cmd
+package drawer
 
 import (
 	"bufio"
@@ -43,11 +43,11 @@ func verifyMap(t *testing.T, testCaseFile string) {
 		t.Fatalf("Failed to read test case file: %v", err)
 	}
 
-	properties, err := mermaidFileToMap(mermaid, "cli")
+	properties, err := MermaidFileToMap(mermaid, "cli")
 	if err != nil {
 		log.Fatal("Failed to parse mermaid: ", err)
 	}
-	actualMap := drawMap(properties)
+	actualMap := DrawMap(properties)
 	if expectedMap != actualMap {
 		expectedWithSpaces := strings.ReplaceAll(expectedMap, " ", "·")
 		actualWithSpaces := strings.ReplaceAll(actualMap, " ", "·")
@@ -56,7 +56,7 @@ func verifyMap(t *testing.T, testCaseFile string) {
 }
 
 func TestASCII(t *testing.T) {
-	useAscii = true
+	UseAscii = true
 	dir := "testdata/ascii"
 	files, err := os.ReadDir(dir)
 	if err != nil {
@@ -73,7 +73,7 @@ func TestASCII(t *testing.T) {
 }
 
 func TestExtendedChars(t *testing.T) {
-	useAscii = false
+	UseAscii = false
 	dir := "testdata/extended-chars"
 	files, err := os.ReadDir(dir)
 	if err != nil {
